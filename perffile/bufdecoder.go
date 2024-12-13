@@ -45,6 +45,10 @@ func (b *bufDecoder) i32() int32 {
 }
 
 func (b *bufDecoder) u64() uint64 {
+	// see https://github.com/aclements/go-perf/issues/5
+	if len(b.buf) < 8 {
+		return 0
+	}
 	x := b.order.Uint64(b.buf)
 	b.buf = b.buf[8:]
 	return x
